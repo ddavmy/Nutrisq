@@ -9,7 +9,7 @@ import java.util.Date;
 @Entity
 @Data
 @NoArgsConstructor
-public class UserInfoDetails {
+public class UserDetails {
 
     @Id
     private int userId;
