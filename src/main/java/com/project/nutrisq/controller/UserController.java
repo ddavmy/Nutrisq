@@ -1,6 +1,7 @@
 package com.project.nutrisq.controller;
 
 import com.project.nutrisq.model.User;
+import com.project.nutrisq.model.UserSpecifics;
 import com.project.nutrisq.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,7 +16,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/users")
+    @GetMapping()
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
@@ -31,4 +32,6 @@ public class UserController {
         return userService.editUserRole(user);
     }
 
+    @PutMapping("userSpecifics")
+    public UserSpecifics editUserSpecifics(@RequestBody UserSpecifics userSpecifics) { return userService.editUserSpecifics(userSpecifics); }
 }
