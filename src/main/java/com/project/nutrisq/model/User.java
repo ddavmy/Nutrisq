@@ -2,19 +2,22 @@ package com.project.nutrisq.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
 
 @Entity
 @Data
-@NoArgsConstructor
-public class UserInfo {
+@Getter
+@Setter
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Column(name = "id")
+    private Integer id;
 
     @Column(nullable = false)
     private String email;
@@ -25,10 +28,15 @@ public class UserInfo {
     @Column(nullable = false)
     private String password;
 
-    @Column(columnDefinition = "varchar(255) default 'user'")
+    @Column(nullable = false, columnDefinition = "varchar(255) default 'user'")
     private String roles = "user";
 
     @CreationTimestamp
     @Column(updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Timestamp created;
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @PrimaryKeyJoinColumn
+    private UserSpecifics userSpecifics;
+
 }

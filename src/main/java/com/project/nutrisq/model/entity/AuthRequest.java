@@ -1,4 +1,4 @@
-package com.project.nutrisq.entity;
+package com.project.nutrisq.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,7 +1,7 @@
 package com.project.nutrisq.config;
 
 import com.project.nutrisq.service.JwtService;
-import com.project.nutrisq.service.UserInfoService;
+import com.project.nutrisq.service.AuthService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,7 +23,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private JwtService jwtService;
 
     @Autowired
-    private UserInfoService userDetailsService;
+    private AuthService userDetailsService;
   
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) 

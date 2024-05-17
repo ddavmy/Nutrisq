@@ -1,6 +1,6 @@
-package com.project.nutrisq.entity;
+package com.project.nutrisq.model.entity;
 
-import com.project.nutrisq.model.UserInfo;
+import com.project.nutrisq.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,10 +16,10 @@ public class UserInfoDetails implements UserDetails {
     private String password; 
     private List<GrantedAuthority> authorities;
   
-    public UserInfoDetails(UserInfo userInfo) {
-        name = userInfo.getUsername();
-        password = userInfo.getPassword(); 
-        authorities = Arrays.stream(userInfo.getRoles().split(",")) 
+    public UserInfoDetails(User user) {
+        name = user.getUsername();
+        password = user.getPassword();
+        authorities = Arrays.stream(user.getRoles().split(","))
                 .map(SimpleGrantedAuthority::new) 
                 .collect(Collectors.toList()); 
     } 

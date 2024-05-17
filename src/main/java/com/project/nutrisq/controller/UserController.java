@@ -1,60 +1,34 @@
 package com.project.nutrisq.controller;
 
-import com.project.nutrisq.entity.AuthRequest;
-import com.project.nutrisq.model.UserInfo;
-import com.project.nutrisq.service.JwtService;
-import com.project.nutrisq.service.UserInfoService;
+import com.project.nutrisq.model.User;
+import com.project.nutrisq.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
+@RequestMapping("/api")
 @RequiredArgsConstructor
-@RequestMapping("/auth")
-public class UserController { 
+public class UserController {
 
-    private final UserInfoService service;
+    private final UserService userService;
 
-    private final JwtService jwtService;
+    @GetMapping("/users")
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
+    }
 
-    private final AuthenticationManager authenticationManager;
-  
-    @GetMapping("/welcome") 
-    public String welcome() { 
-        return "Welcome this endpoint is not secure"; 
-    } 
-  
-    @PostMapping("/addNewUser") 
-    public String addNewUser(@RequestBody UserInfo userInfo) {
-        return service.addUser(userInfo); 
-    } 
-  
-    @GetMapping("/user/userProfile") 
-    @PreAuthorize("hasAuthority('user')")
-    public String userProfile() { 
-        return "Welcome to User Profile"; 
-    } 
-  
-    @GetMapping("/admin/adminProfile") 
+    @PutMapping("/user")
+    public User editUser(@RequestBody User user) {
+        return userService.editUser(user);
+    }
+
+    @PutMapping("/role")
     @PreAuthorize("hasAuthority('admin')")
-    public String adminProfile() { 
-        return "Welcome to Admin Profile"; 
+    public User editUserRole(@RequestBody User user) {
+        return userService.editUserRole(user);
     }
 
-    @PostMapping("/generateToken")
-    public String authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
-        Authentication authentication = authenticationManager
-        		.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(),
-        				authRequest.getPassword()));
-        if (authentication.isAuthenticated()) {
-            return jwtService.generateToken(authRequest.getUsername());
-        } else {
-            throw new UsernameNotFoundException("invalid user request !");
-        }
-    }
-  
-} 
+}

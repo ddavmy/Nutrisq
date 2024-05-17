@@ -1,6 +1,6 @@
 package com.project.nutrisq.config;
 
-import com.project.nutrisq.service.UserInfoService;
+import com.project.nutrisq.service.AuthService;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -32,11 +32,11 @@ public class SecurityConfig {
   
     @Autowired
     private JwtAuthFilter authFilter; 
-  
-    // User Creation 
+
+    // User Creation
     @Bean
-    public UserDetailsService userDetailsService() { 
-        return new UserInfoService();
+    public UserDetailsService userDetailsDataService() {
+        return new AuthService();
     }
 
     // Configuring HttpSecurity
@@ -45,7 +45,7 @@ public class SecurityConfig {
         return http.cors().and()
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/auth/welcome", "/auth/addNewUser", "/swagger-ui/**", "/v3/api-docs", "/auth/generateToken").permitAll()
+                .requestMatchers("/auth/register", "/auth/login", "/swagger-ui/**", "/v3/api-docs").permitAll()
                 .and()
                 .authorizeHttpRequests().requestMatchers("**").authenticated()
                 .and()
@@ -56,8 +56,8 @@ public class SecurityConfig {
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
-  
-    // Password Encoding 
+
+    // Password Encoding
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -66,7 +66,7 @@ public class SecurityConfig {
     @Bean
     public AuthenticationProvider authenticationProvider() { 
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider(); 
-        authenticationProvider.setUserDetailsService(userDetailsService()); 
+        authenticationProvider.setUserDetailsService(userDetailsDataService());
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider; 
     } 
@@ -76,6 +76,7 @@ public class SecurityConfig {
         return config.getAuthenticationManager(); 
     }
 
+    // Swagger 3.0 Configuration
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
