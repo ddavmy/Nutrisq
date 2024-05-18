@@ -1,5 +1,5 @@
-INSERT INTO User (email, username, password)
-SELECT 'string@string.str', 'string', '$2a$10$aCfS5UM8eWn1fEKf0nYTIOqXZrbWMjDGITo8TPeccNpQEBKA1LbxG'
+INSERT INTO User (email, username, password, roles)
+SELECT 'string@string.str', 'string', '$2a$10$aCfS5UM8eWn1fEKf0nYTIOqXZrbWMjDGITo8TPeccNpQEBKA1LbxG', 'admin'
 WHERE NOT EXISTS (
     SELECT 1 FROM User WHERE username = 'string'
 );

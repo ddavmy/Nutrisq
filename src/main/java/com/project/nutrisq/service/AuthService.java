@@ -1,5 +1,8 @@
 package com.project.nutrisq.service;
 
+import com.project.nutrisq.controller.dto.UserDto;
+import com.project.nutrisq.controller.mapper.UserMapper;
+import com.project.nutrisq.controller.mapper.UserSpecificsMapper;
 import com.project.nutrisq.model.entity.UserInfoDetails;
 import com.project.nutrisq.model.UserSpecifics;
 import com.project.nutrisq.model.User;
@@ -48,5 +51,22 @@ public class AuthService implements UserDetailsService {
         repository.save(user);
 
         return "User Added Successfully";
+    }
+
+    public UserDto createUser(UserDto userDto) {
+        User user = new User();
+        user.setEmail(userDto.getEmail());
+        user.setUsername(userDto.getUsername());
+        user.setPassword(encoder.encode(userDto.getPassword()));
+
+        if (userDto.getUserSpecifics() != null) {
+            UserSpecifics userSpecifics = UserSpecificsMapper.mapToUserSpecifics(userDto.getUserSpecifics());
+            userSpecifics.setUsername(user.getUsername());
+            user.setUserSpecifics(userSpecifics);
+            userSpecifics.setUser(user);
+        }
+
+        User savedUser = repository.save(user);
+        return UserMapper.mapToUserDto(savedUser);
     }
 }

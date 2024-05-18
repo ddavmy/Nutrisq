@@ -1,10 +1,12 @@
 package com.project.nutrisq.controller;
 
+import com.project.nutrisq.controller.dto.UserDto;
 import com.project.nutrisq.model.entity.AuthRequest;
-import com.project.nutrisq.model.User;
 import com.project.nutrisq.service.JwtService;
 import com.project.nutrisq.service.AuthService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,9 +25,11 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
 
     @PostMapping("/register")
-    public String addNewUser(@RequestBody User user) {
-        return service.addUser(user);
-    } 
+    public ResponseEntity<UserDto> addUser(@RequestBody UserDto userDto) {
+        UserDto savedUserDto = service.createUser(userDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedUserDto);
+    }
+
 
     @PostMapping("/login")
     public String authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
@@ -38,5 +42,4 @@ public class AuthController {
             throw new UsernameNotFoundException("invalid user request!");
         }
     }
-  
 } 

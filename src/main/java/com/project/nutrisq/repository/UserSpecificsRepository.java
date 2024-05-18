@@ -12,4 +12,6 @@ public interface UserSpecificsRepository extends JpaRepository<UserSpecifics, In
     Optional<UserSpecifics> findByUsername(String username);
 
     boolean existsByUsername(String username);
+
+    Optional<UserSpecifics> findByUserId(Integer id);
 }
