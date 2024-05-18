@@ -34,8 +34,14 @@ public class AuthService implements UserDetailsService {
     public String addUser(User user) {
         user.setPassword(encoder.encode(user.getPassword()));
         user.setRoles(user.getRoles());
+
         UserSpecifics userSpecifics = user.getUserSpecifics();
-        if (userSpecifics != null) {
+        if (userSpecifics == null) {
+            userSpecifics = new UserSpecifics();
+            userSpecifics.setUsername(user.getUsername());
+            user.setUserSpecifics(userSpecifics);
+        } else {
+            userSpecifics.setUsername(user.getUsername());
             userSpecifics.setUser(user);
         }
 

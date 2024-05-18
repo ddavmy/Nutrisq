@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Date;
 
@@ -15,14 +17,17 @@ import java.util.Date;
 public class UserSpecifics {
 
     @Id
-    @Column(name = "userId")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(nullable = false, unique = true)
+    private String username;
 
     private String firstname;
 
     private String lastname;
 
-    @Column(nullable = false, updatable = false, columnDefinition = "DATE DEFAULT CURRENT_DATE")
+    @Column(columnDefinition = "DATE DEFAULT CURRENT_DATE")
     private Date born;
 
     private Double weight;
@@ -31,9 +36,10 @@ public class UserSpecifics {
 
     private String sex;
 
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "userId")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "username", referencedColumnName = "username", insertable = false, updatable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private User user;
+
 }

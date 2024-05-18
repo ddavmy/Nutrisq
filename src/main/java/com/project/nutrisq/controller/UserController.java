@@ -16,22 +16,21 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping()
+    @GetMapping("/users")
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
 
-    @PutMapping("/user")
-    public User editUser(@RequestBody User user) {
-        return userService.editUser(user);
-    }
+    @PutMapping("/user/{username}")
+    public User editUser(@RequestBody User user, @PathVariable("username") String username) { return userService.editUser(user, username); }
 
-    @PutMapping("/role")
+    @PutMapping("/role/{username}")
     @PreAuthorize("hasAuthority('admin')")
-    public User editUserRole(@RequestBody User user) {
-        return userService.editUserRole(user);
-    }
+    public User editUserRole(@RequestBody User user, @PathVariable("username") String username) { return userService.editUserRole(user, username); }
 
-    @PutMapping("userSpecifics")
-    public UserSpecifics editUserSpecifics(@RequestBody UserSpecifics userSpecifics) { return userService.editUserSpecifics(userSpecifics); }
+    @PutMapping("userSpecifics/{username}")
+    public UserSpecifics editUserSpecifics(@RequestBody UserSpecifics userSpecifics, @PathVariable("username") String username) { return userService.editUserSpecifics(userSpecifics, username); }
+
+    @DeleteMapping("/user/{username}")
+    public String deleteUser(@PathVariable("username") String username) { return userService.deleteUserByUsername(username); }
 }
