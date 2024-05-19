@@ -1,4 +1,3 @@
-
 <p align="center">
   <h1 align="center">Nutrisq</h1>
   <p align="center">Web App to track nutrition intake and stay informed about your diet.</p>
@@ -11,17 +10,20 @@
 
 ## Table of Contents
 
----
+* ### [API Documentation](#-api-documentation)
+  * [User APIs](#user-apis)
+  * [Authentication APIs](#authentication-apis)
+  * [Product APIs](#product-apis)
 
-* [API Documentation](#-api-documentation)
-* [Data Models](#-data-models)
-
+* ### [Data Models](#-data-models)
+  * [User Object](#user-object)
+  * [UserSpecifics Object](#userspecifics-object)
+  * [Auth Object](#auth-object)
+  * [ProductDetailsDto Object](#productdetailsdto-object)
 
 ## 📖 API Documentation
 
----
-
-## User API's
+## User APIs
 
 ### Get All Users
 
@@ -57,8 +59,7 @@
 - **Description:** Deletes a specified user.
 - **Response:** `200 OK` with a confirmation message.
 
-## Authentication API's
-
+## Authentication APIs
 
 ### Register New User
 
@@ -74,7 +75,15 @@
 - **Request Body:** `AuthRequest` object.
 - **Response:** `200 OK` with a JWT token or an error message if authentication fails.
 
-## 🗂️ Data Models
+## Product APIs
+
+### Get Products by Name
+
+- **Endpoint:** `GET /api/products/{name}`
+- **Description:** Retrieves a list of products by name from the external  <b>[Open Food Facts](https://world.openfoodfacts.org/data)</b> API.
+- **Response:** `200 OK` with a list of product details.
+
+## 📦 Data Models
 
 ### User Object
 
@@ -129,5 +138,66 @@ The `User` object contains the following fields:
 {
   "username": "john_doe",
   "password": "password123"
+}
+```
+
+### ProductDetailsDto Object
+
+The `ProductDetailsDto` object contains the following fields:
+
+- `count`: `Integer` - The number of products found.
+- `page`: `Integer` - The current page of results.
+- `page_count`: `Integer` - The total number of pages.
+- `page_size`: `Integer` - The number of products per page.
+- `skip`: `Integer` - The number of products skipped.
+- `products`: `List<Product>` - A list of product objects.
+
+```json
+{
+  "count": 1,
+  "page": 1,
+  "page_count": 24,
+  "page_size": 24,
+  "skip": 0,
+  "products": [
+    {
+      "code": "20012182",
+      "nutriments": {
+        "fat": 0,
+        "carbohydrates": 0,
+        "sugars": 0,
+        "fiber": 0,
+        "salt": 0,
+        "energy-kcal": 0,
+        "saturated-fat": 0
+      },
+      "nutriments_estimated": {
+        "cholesterol_100g": 0,
+        "vitamin-a_100g": 0,
+        "vitamin-b1_100g": 0,
+        "vitamin-pp_100g": 0,
+        "pantothenic-acid_100g": 0,
+        "vitamin-b6_100g": 0,
+        "vitamin-b9_100g": 0,
+        "vitamin-b12_100g": 0,
+        "vitamin-c_100g": 0,
+        "vitamin-d_100g": 0,
+        "vitamin-e_100g": 0,
+        "phylloquinone_100g": 0,
+        "zinc_100g": 0,
+        "phosphorus_100g": 0,
+        "iodine_100g": 0,
+        "magnesium_100g": 0,
+        "copper_100g": 0,
+        "potassium_100g": 0,
+        "selenium_100g": 0,
+        "sodium_100g": 0,
+        "calcium_100g": 0,
+        "iron_100g": 0
+      },
+      "product_name": "Flour",
+      "image_url": "https://images.openfoodfacts.org/images/products/20012182/front_en.117.400.jpg"
+    }
+  ]
 }
 ```
