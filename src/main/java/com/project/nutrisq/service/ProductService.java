@@ -11,8 +11,9 @@ public class ProductService {
 
     private final ProductClient productClient;
 
-    public ProductDetailsDto getProducts(String name) {
-        return productClient.getProductsByName(name);
+    public ProductDetailsDto getProductsByKeywords(String keywords) {
+        return productClient.getProductsByKeywords(keywords);
     }
 
+    public ProductDetailsDto.SingleProductDetailsDto getProductByBarcode(String barcode) { return productClient.getProductByBarcode(barcode); }
 }

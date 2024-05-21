@@ -10,6 +10,8 @@ public class Product {
     private String productName;
     @JsonProperty("image_url")
     private String imageUrl;
+    private String brands;
+    private String quantity;
     private Nutriments nutriments;
     private Nutriments_estimated nutriments_estimated;
 
@@ -18,6 +20,7 @@ public class Product {
         @JsonProperty("energy-kcal")
         private Double energyKcal;
         private Double fat;
+        private Double proteins;
         @JsonProperty("saturated-fat")
         private Double saturatedFat;
         private Double carbohydrates;

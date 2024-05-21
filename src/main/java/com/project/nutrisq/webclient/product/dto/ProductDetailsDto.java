@@ -1,13 +1,11 @@
 package com.project.nutrisq.webclient.product.dto;
 
 import com.project.nutrisq.model.Product;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 public class ProductDetailsDto {
     private Integer count;
     private Integer page;
@@ -15,4 +13,9 @@ public class ProductDetailsDto {
     private Integer page_size;
     private Integer skip;
     private List<Product> products;
+
+    @Data
+    public static class SingleProductDetailsDto {
+        private List<Product> products;
+    }
 }

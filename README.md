@@ -30,6 +30,7 @@
 - **Endpoint:** `GET /api/users`
 - **Description:** Retrieves a list of all registered users with their details.
 - **Response:** `200 OK` with a list of user objects.
+- **Authorization:** Requires `admin` authority.
 
 ### Edit User Information
 
@@ -37,6 +38,7 @@
 - **Description:** Updates the information of a specified user.
 - **Request Body:** `User` object.
 - **Response:** `200 OK` with the updated user object.
+- **Authorization:** Requires `user` authority.
 
 ### Edit User Role
 
@@ -52,12 +54,14 @@
 - **Description:** Updates the specific details of a specified user.
 - **Request Body:** `UserSpecifics` object.
 - **Response:** `200 OK` with the updated `UserSpecifics` object.
+- **Authorization:** Requires `user` authority.
 
 ### Delete User
 
 - **Endpoint:** `DELETE /api/user/{username}`
 - **Description:** Deletes a specified user.
 - **Response:** `200 OK` with a confirmation message.
+- **Authorization:** Requires `user` authority.
 
 ## Authentication APIs
 
@@ -79,9 +83,15 @@
 
 ### Get Products by Name
 
-- **Endpoint:** `GET /api/products/{name}`
+- **Endpoint:** `GET /api/products/name/{name}`
 - **Description:** Retrieves a list of products by name from the external  <b>[Open Food Facts](https://world.openfoodfacts.org/data)</b> API.
 - **Response:** `200 OK` with a list of product details.
+
+### Get Products by Barcode
+
+- **Endpoint:** `GET /api/products/barcode/{name}`
+- **Description:** Retrieves product by barcode from the external  <b>[Open Food Facts](https://world.openfoodfacts.org/data)</b> API.
+- **Response:** `200 OK` with product details.
 
 ## 📦 Data Models
 
@@ -162,8 +172,11 @@ The `ProductDetailsDto` object contains the following fields:
   "products": [
     {
       "code": "20012182",
+      "brands": "Lidl, Belbake",
+      "quantity": "400g",
       "nutriments": {
         "fat": 0,
+        "proteins": 0,
         "carbohydrates": 0,
         "sugars": 0,
         "fiber": 0,

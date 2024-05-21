@@ -15,9 +15,14 @@ public class ProductController {
 
     private final ProductService productService;
 
-    @GetMapping("/products/{name}")
-    public ProductDetailsDto getProductsByName(@PathVariable String name) {
-        return productService.getProducts(name);
+    // TODO: Implement caching here
+    @GetMapping("/products/name/{keywords}")
+    public ProductDetailsDto getProductsByKeywords(@PathVariable String keywords) {
+        return productService.getProductsByKeywords(keywords);
     }
+
+    // TODO: Implement caching here
+    @GetMapping("/products/code/{barcode}")
+    public ProductDetailsDto.SingleProductDetailsDto getProductByBarcode(@PathVariable String barcode) { return productService.getProductByBarcode(barcode); }
 
 }

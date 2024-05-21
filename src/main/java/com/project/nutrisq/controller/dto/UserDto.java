@@ -1,6 +1,7 @@
 package com.project.nutrisq.controller.dto;
 
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -54,5 +55,12 @@ public class UserDto implements Serializable {
             this.username = username;
             this.password = password;
         }
+    }
+
+    @Data
+    @Builder
+    public static class Country {
+        private String name;
+        private String code;
     }
 }

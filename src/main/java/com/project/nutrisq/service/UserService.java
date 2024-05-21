@@ -9,10 +9,12 @@ import com.project.nutrisq.repository.UserRepository;
 import com.project.nutrisq.repository.UserSpecificsRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +27,7 @@ public class UserService {
     private static final int PAGE_SIZE = 3;
     private final UserRepository userRepository;
     private final UserSpecificsRepository userSpecificsRepository;
+    private RestTemplate restTemplate = new RestTemplate();
 
     @Autowired
     private PasswordEncoder encoder;
@@ -100,5 +103,15 @@ public class UserService {
         } else {
             throw new RuntimeException("User not found");
         }
+    }
+
+    // Get user's country code
+    public String getUserCountry() {
+        String country = restTemplate.getForObject("https://api.country.is", String.class);
+
+        JSONObject jsonObject = new JSONObject(country);
+        String countryCode = jsonObject.getString("country");
+
+        return countryCode.toLowerCase();
     }
 }
