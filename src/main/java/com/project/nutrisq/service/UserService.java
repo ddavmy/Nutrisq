@@ -51,7 +51,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserDto.UserEdit editUser(UserDto.UserEdit user, String username) {
+    public String editUser(UserDto.UserEdit user, String username) {
         User userEdited = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -60,48 +60,47 @@ public class UserService {
         Optional.ofNullable(user.getPassword())
                 .ifPresent(password -> userEdited.setPassword(encoder.encode(password)));
 
-        return new UserDto.UserEdit(
-                userEdited.getEmail(),
-                userEdited.getUsername(),
-                userEdited.getPassword()
-        );
+        return "User edited successfully";
     }
 
     @Transactional
-    public UserDto.RoleEdit editUserRole(UserDto.RoleEdit user, String username) {
-        User userToEdit = userRepository.findByUsername(username)
+    public String editUserRole(UserDto.RoleEdit user, String username) {
+        User userEdited = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if (user.getRoles() != null && !user.getRoles().isEmpty()) {
-            userToEdit.setRoles(user.getRoles());
+        Optional.ofNullable(user.getRoles()).ifPresent(userEdited::setRoles);
+
+        return "User roles edited successfully";
+    }
+
+    @Transactional
+    public String editUserSpecifics(UserSpecificsDto userSpecificsDto, String username) {
+        Optional<User> user = userRepository.findByUsername(username);
+        if (user.isPresent()) {
+            UserSpecifics userEdited = userSpecificsRepository.findByUsername(username)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+
+            Optional.ofNullable(userSpecificsDto.getFirstname()).ifPresent(userEdited::setFirstname);
+            Optional.ofNullable(userSpecificsDto.getLastname()).ifPresent(userEdited::setLastname);
+            Optional.ofNullable(userSpecificsDto.getBorn()).ifPresent(userEdited::setBorn);
+            Optional.ofNullable(userSpecificsDto.getHeight()).ifPresent(userEdited::setHeight);
+            Optional.ofNullable(userSpecificsDto.getWeight()).ifPresent(userEdited::setWeight);
+            Optional.ofNullable(userSpecificsDto.getSex()).ifPresent(userEdited::setSex);
+
+            return "User specifics updated successfully";
+        } else {
+            return "User " + username + " not found";
         }
-        userRepository.save(userToEdit);
-
-        return new UserDto.RoleEdit(userToEdit.getRoles());
-    }
-
-    @Transactional
-    public UserSpecificsDto editUserSpecifics(UserSpecificsDto userSpecificsDto, String username) {
-        UserSpecifics userEdited = userSpecificsRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        Optional.ofNullable(userSpecificsDto.getFirstname()).ifPresent(userEdited::setFirstname);
-        Optional.ofNullable(userSpecificsDto.getLastname()).ifPresent(userEdited::setLastname);
-        Optional.ofNullable(userSpecificsDto.getBorn()).ifPresent(userEdited::setBorn);
-        Optional.ofNullable(userSpecificsDto.getHeight()).ifPresent(userEdited::setHeight);
-        Optional.ofNullable(userSpecificsDto.getWeight()).ifPresent(userEdited::setWeight);
-        Optional.ofNullable(userSpecificsDto.getSex()).ifPresent(userEdited::setSex);
-
-        return UserSpecificsMapper.mapToUserSpecificsDto(userEdited);
     }
 
     @Transactional
     public String deleteUserByUsername(String username) {
-        if (userSpecificsRepository.existsByUsername(username)) {
+        Optional<User> user = userRepository.findByUsername(username);
+        if (user.isPresent()) {
             userRepository.deleteByUsername(username);
             return "User " + username + " has been deleted";
         } else {
-            throw new RuntimeException("User not found");
+            return "User " + username + " not found";
         }
     }
 

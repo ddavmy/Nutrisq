@@ -4,6 +4,7 @@ import com.project.nutrisq.controller.dto.UserDto;
 import com.project.nutrisq.controller.dto.UserSpecificsDto;
 import com.project.nutrisq.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -41,25 +42,28 @@ public class UserController {
 
     @PutMapping("/user/{username}")
     @isOwnerOrAdmin
-    public UserDto.UserEdit editUser(@RequestBody UserDto.UserEdit user, @PathVariable("username") String username) {
-        return userService.editUser(user, username);
+    public ResponseEntity<String> editUser(@RequestBody UserDto.UserEdit user, @PathVariable("username") String username) {
+        String editedUserDto = userService.editUser(user, username);
+        return ResponseEntity.status(HttpStatus.OK).body(editedUserDto);
     }
 
     @PutMapping("/role/{username}")
     @PreAuthorize("hasAuthority('admin')")
-    public UserDto.RoleEdit editUserRole(@RequestBody UserDto.RoleEdit role, @PathVariable("username") String username) {
-        return userService.editUserRole(role, username);
+    public ResponseEntity<String> editUserRole(@RequestBody UserDto.RoleEdit role, @PathVariable("username") String username) {
+        String editedUserDto = userService.editUserRole(role, username);
+        return ResponseEntity.status(HttpStatus.OK).body(editedUserDto);
     }
 
     @PutMapping("/userSpecifics/{username}")
     @isOwnerOrAdmin
-    public ResponseEntity<UserSpecificsDto> editUserSpecifics(@RequestBody UserSpecificsDto userSpecifics, @PathVariable("username") String username) {
-        UserSpecificsDto updatedUserSpecifics = userService.editUserSpecifics(userSpecifics, username);
-        return ResponseEntity.ok(updatedUserSpecifics);
+    public ResponseEntity<String> editUserSpecifics(@RequestBody UserSpecificsDto userSpecifics, @PathVariable("username") String username) {
+        String updatedUserSpecifics = userService.editUserSpecifics(userSpecifics, username);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedUserSpecifics);
     }
 
     @DeleteMapping("/user/{username}")
-    public String deleteUser(@PathVariable("username") String username) {
-        return userService.deleteUserByUsername(username);
+    public ResponseEntity<String> deleteUser(@PathVariable("username") String username) {
+        String deletedUser = userService.deleteUserByUsername(username);
+        return ResponseEntity.status(HttpStatus.OK).body(deletedUser);
     }
 }

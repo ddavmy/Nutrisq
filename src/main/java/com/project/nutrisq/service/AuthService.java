@@ -1,7 +1,6 @@
 package com.project.nutrisq.service;
 
 import com.project.nutrisq.controller.dto.UserDto;
-import com.project.nutrisq.controller.mapper.UserMapper;
 import com.project.nutrisq.controller.mapper.UserSpecificsMapper;
 import com.project.nutrisq.model.entity.UserInfoDetails;
 import com.project.nutrisq.model.UserSpecifics;
@@ -34,39 +33,25 @@ public class AuthService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found " + username));
     }
 
-    public String addUser(User user) {
-        user.setPassword(encoder.encode(user.getPassword()));
-        user.setRoles(user.getRoles());
-
-        UserSpecifics userSpecifics = user.getUserSpecifics();
-        if (userSpecifics == null) {
-            userSpecifics = new UserSpecifics();
-            userSpecifics.setUsername(user.getUsername());
-            user.setUserSpecifics(userSpecifics);
-        } else {
-            userSpecifics.setUsername(user.getUsername());
-            userSpecifics.setUser(user);
-        }
-
-        repository.save(user);
-
-        return "User Added Successfully";
-    }
-
-    public UserDto createUser(UserDto userDto) {
+    public String createUser(UserDto userDto) {
         User user = new User();
         user.setEmail(userDto.getEmail());
         user.setUsername(userDto.getUsername());
-        user.setPassword(encoder.encode(userDto.getPassword()));
 
-        if (userDto.getUserSpecifics() != null) {
-            UserSpecifics userSpecifics = UserSpecificsMapper.mapToUserSpecifics(userDto.getUserSpecifics());
-            userSpecifics.setUsername(user.getUsername());
-            user.setUserSpecifics(userSpecifics);
-            userSpecifics.setUser(user);
+        if (userDto.getPassword() != null) {
+            user.setPassword(encoder.encode(userDto.getPassword()));
+
+            if (userDto.getUserSpecifics() != null) {
+                UserSpecifics userSpecifics = UserSpecificsMapper.mapToUserSpecifics(userDto.getUserSpecifics());
+                userSpecifics.setUsername(user.getUsername());
+                user.setUserSpecifics(userSpecifics);
+                userSpecifics.setUser(user);
+
+                repository.save(user);
+
+                return "User created successfully";
+            }
         }
-
-        User savedUser = repository.save(user);
-        return UserMapper.mapToUserDto(savedUser);
+        return "Couldn't create user";
     }
 }

@@ -1,8 +1,9 @@
 package com.project.nutrisq.controller.dto;
 
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -11,7 +12,6 @@ import java.sql.Timestamp;
 public class UserDto implements Serializable {
     private String email;
     private String username;
-    private String created;
     private String password;
     private UserSpecificsDto userSpecifics;
 
@@ -23,18 +23,10 @@ public class UserDto implements Serializable {
         private String roles;
         private Timestamp created;
         private UserSpecificsDto userSpecifics;
-
-        public GetUsers(String email, String username, String roles, Timestamp created, UserSpecificsDto userSpecifics) {
-            this.email = email;
-            this.username = username;
-            this.roles = roles;
-            this.created = created;
-            this.userSpecifics = userSpecifics;
-        }
     }
 
     @Getter
-    @Builder
+    @NoArgsConstructor
     public static class RoleEdit implements Serializable {
         private String roles;
 
@@ -49,18 +41,5 @@ public class UserDto implements Serializable {
         private String email;
         private String username;
         private String password;
-
-        public UserEdit(String email, String username, String password) {
-            this.email = email;
-            this.username = username;
-            this.password = password;
-        }
-    }
-
-    @Data
-    @Builder
-    public static class Country {
-        private String name;
-        private String code;
     }
 }

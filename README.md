@@ -28,7 +28,7 @@
 ### Get All Users
 
 - **Endpoint:** `GET /api/users`
-- **Description:** Retrieves a list of all registered users with their details.
+- **Description:** Retrieves a list of all registered users with their details. Only accessible by users with admin authority.
 - **Response:** `200 OK` with a list of user objects.
 - **Authorization:** Requires `admin` authority.
 
@@ -37,7 +37,7 @@
 - **Endpoint:** `PUT /user/{username}`
 - **Description:** Updates the information of a specified user.
 - **Request Body:** `User` object.
-- **Response:** `200 OK` with the updated user object.
+- **Response:** `200 OK` with a confirmation message.
 - **Authorization:** Requires `user` authority.
 
 ### Edit User Role
@@ -45,7 +45,7 @@
 - **Endpoint:** `PUT /api/role/{username}`
 - **Description:** Updates the role of a specified user. Only accessible by users with admin authority.
 - **Request Body:** `User` object.
-- **Response:** `200 OK` with the updated user object.
+- **Response:** `200 OK` with a confirmation message.
 - **Authorization:** Requires `admin` authority.
 
 ### Edit User Specifics
@@ -53,7 +53,7 @@
 - **Endpoint:** `PUT /api/userSpecifics/{username}`
 - **Description:** Updates the specific details of a specified user.
 - **Request Body:** `UserSpecifics` object.
-- **Response:** `200 OK` with the updated `UserSpecifics` object.
+- **Response:** `200 OK` with a confirmation message.
 - **Authorization:** Requires `user` authority.
 
 ### Delete User
@@ -124,7 +124,7 @@ The `UserSpecifics` object contains the following fields:
 - `born`: `Date` - The birthdate of the user.
 - `weight`: `Double` - The weight of the user in kilograms.
 - `height`: `Double` - The height of the user in centimeters.
-- `sex`: `String` - The sex of the user ("male", "female", "other").
+- `sex`: `String` - The sex of the user ("Male", "Female").
 
 ```json
 {
@@ -133,7 +133,7 @@ The `UserSpecifics` object contains the following fields:
   "born": "1990-01-01",
   "weight": 70.5,
   "height": 175.5,
-  "sex": "male"
+  "sex": "Male"
 }
 ```
 
